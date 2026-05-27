@@ -61,8 +61,9 @@ class BinaryMlp(nn.Module):
         )
 
         model.load_state_dict(checkpoint["state_dict"])
+        model.to(map_location)
 
-        print(f">>> Model loaded from: {load_path}")
+        print(f">>> Model loaded from: {load_path} (device: {map_location})")
 
         return model
 

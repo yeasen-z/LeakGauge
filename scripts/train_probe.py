@@ -163,7 +163,6 @@ def train_test(data_dir, device="cuda:0", epochs=10, training_batch=64, train_lr
     if model_save_dir is not None and best_state is not None:
         save_path = os.path.join(model_save_dir, prefill_type, model_name, task, "best_model.pt")
         meta = {
-            "prefill_type": prefill_type,
             "model_name": model_name,
             "task": task,
             "input_dim": input_dim,
@@ -175,9 +174,9 @@ def train_test(data_dir, device="cuda:0", epochs=10, training_batch=64, train_lr
             "train_lr": train_lr,
             "training_batch": training_batch,
             "epochs": epochs,
-            "reasoning_parser": meta_info[0]["reasoning_parser"], 
-            "prefill_type": meta_info[0]["prefill_type"], 
-            "intent_based": meta_info[0]["intent_based"], 
+            "reasoning_parser": meta_info[0]["reasoning_parser"],
+            "prefill_type": meta_info[0]["prefill_type"],
+            "intent_based": meta_info[0]["intent_based"],
             "suffix": meta_info[0]["suffix"]
         }
         save_best_model(model, save_path, meta)
