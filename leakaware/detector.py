@@ -41,21 +41,21 @@ class LeakageDetector:
         self.device = device
 
         # load MLP checkpoint and meta
-        self.mlp_models = {}
-        self.meta = {}
+        self.mlp_model = None
+        self.meta = None
         reasoning_parser = "none"
 
         if os.path.isfile(processor_path):
-            self.mlp_models["sys_prompt"] = BinaryMlp.load(
+            self.mlp_model = BinaryMlp.load(
                 processor_path, map_location=device
             )
             meta_path = os.path.splitext(processor_path)[0] + ".meta.json"
             if os.path.isfile(meta_path):
                 with open(meta_path, "r", encoding="utf-8") as f:
-                    self.meta["sys_prompt"] = json.load(f)
-                reasoning_parser = self.meta["sys_prompt"].get("reasoning_parser", "none")
+                    self.meta = json.load(f)
+                reasoning_parser = self.meta.get("reasoning_parser", "none")
             else:
-                self.meta["sys_prompt"] = {}
+                self.meta = {}
         else:
             raise FileNotFoundError(f"Processor checkpoint not found: {processor_path}")
 
@@ -76,11 +76,6 @@ class LeakageDetector:
 
         self.model_name = self.logprobs_extractor.model or self.logprobs_extractor.model_root
 
-    def _get_model(self, prefill_type: str):
-        if prefill_type in self.mlp_models:
-            return self.mlp_models[prefill_type], self.meta.get(prefill_type, {})
-        return self.mlp_models["sys_prompt"], self.meta.get("sys_prompt", {})
-
     def _logprobs_to_features(self, logprobs: list, input_dim: int) -> torch.Tensor:
         arr = np.array(logprobs[:input_dim], dtype=np.float32)
         if len(arr) < input_dim:
@@ -90,18 +85,17 @@ class LeakageDetector:
 
     def detect(
         self,
-        messages: list,
-        prefill_type: str = "sys_prompt",
+        messages: list
     ) -> dict:
 
         prefilled_msgs = self.logprobs_extractor.apply_prefill(
-            messages, prefill_type=prefill_type, intent=True
+            messages, prefill_type=self.meta["prefill_type"], intent=True
         )
 
         logprobs_result = self.logprobs_extractor.get_logprobs(prefilled_msgs)
         raw_logprobs = logprobs_result["all_logprobs"]
 
-        mlp_model, meta = self._get_model(prefill_type)
+        mlp_model, meta = self.mlp_model, self.meta
         threshold = meta.get("best_threshold", 0.5)
         input_dim = meta.get("input_dim", 20)
 
@@ -121,13 +115,12 @@ class LeakageDetector:
 
     def detect_batch(
         self,
-        messages_list: list,
-        prefill_type: str = "sys_prompt",
+        messages_list: list
     ) -> list:
         results = []
         for messages in messages_list:
             try:
-                result = self.detect(messages, prefill_type)
+                result = self.detect(messages)
                 results.append(result)
             except Exception as e:
                 results.append({"label": "error", "probability": 0.0, "error": str(e)})
@@ -138,11 +131,6 @@ class LeakageDetector:
             "model_name": self.model_name,
             "reasoning_parser": self.logprobs_extractor.reasoning_parser,
             "mode": self.logprobs_extractor.mode,
-            "loaded_models": list(self.mlp_models.keys()),
+            "loaded_models": [self.meta],
         }
-        for ptype, m in self.meta.items():
-            info[ptype] = {
-                "input_dim": m.get("input_dim"),
-                "threshold": m.get("best_threshold", 0.5),
-            }
         return info

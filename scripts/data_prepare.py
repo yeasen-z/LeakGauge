@@ -118,10 +118,13 @@ def data_prepare_rag(rag_samples, adv_inst, rag_sys_prompt):
 
 
 
-def load_sys_data():
+def load_sys_data(only_raccoon=False):
     sys_prompt = load_jsonl(DEMO_DIR / "content/prompts.chat.jsonl")
     raccoon = load_jsonl(DEMO_DIR / "attacks/sys.raccoon.jsonl")
-    lma = load_jsonl(DEMO_DIR / "attacks/sys.lma.jsonl")
+    if only_raccoon:
+        lma = []
+    else:
+        lma = load_jsonl(DEMO_DIR / "attacks/sys.lma.jsonl")
     all_attacks = raccoon + lma
     random.shuffle(all_attacks)
 
@@ -139,10 +142,13 @@ def load_sys_data():
     return seen_content, unseen_content, seen_inst, unseen_inst, benign_queries
 
 
-def load_rag_data():
+def load_rag_data(only_raccoon=False):
     rag_sys_prompt = load_jsonl(DEMO_DIR / "content/rag_prompt.jsonl")
     raccoon = load_jsonl(DEMO_DIR / "attacks/rag.raccoon.jsonl")
-    lma = load_jsonl(DEMO_DIR / "attacks/rag.lma.jsonl")
+    if only_raccoon:
+        lma = []
+    else:
+        lma = load_jsonl(DEMO_DIR / "attacks/rag.lma.jsonl")
     all_attacks = raccoon + lma
     random.shuffle(all_attacks)
 
@@ -163,8 +169,8 @@ def load_rag_data():
 
 
 
-def run_sys(large):
-    seen_content, unseen_content, seen_inst, unseen_inst, benign_queries = load_sys_data()
+def run_sys(large, only_raccoon=False):
+    seen_content, unseen_content, seen_inst, unseen_inst, benign_queries = load_sys_data(only_raccoon)
 
     train_val_attack, train_val_benign = data_prepare_sys(seen_content, seen_inst, benign_queries)
     unseen_content_attack, unseen_content_benign = data_prepare_sys(unseen_content, seen_inst, benign_queries)
@@ -193,8 +199,8 @@ def run_sys(large):
     print("Sys Done." + (" (large mode)" if large else ""))
 
 
-def run_rag(large):
-    seen_content, unseen_content, seen_inst, unseen_inst, rag_sys_prompt = load_rag_data()
+def run_rag(large, only_raccoon=False):
+    seen_content, unseen_content, seen_inst, unseen_inst, rag_sys_prompt = load_rag_data(only_raccoon)
 
     train_val_attack, train_val_benign = data_prepare_rag(seen_content, seen_inst, rag_sys_prompt)
     unseen_content_attack, unseen_content_benign = data_prepare_rag(unseen_content, seen_inst, rag_sys_prompt)
@@ -223,9 +229,9 @@ def run_rag(large):
     print("RAG Done." + (" (large mode)" if large else ""))
 
 
-def run_leak(large):
-    sys_seen_content, sys_unseen_content, sys_seen_inst, sys_unseen_inst, benign_queries = load_sys_data()
-    rag_seen_content, rag_unseen_content, rag_seen_inst, rag_unseen_inst, rag_sys_prompt = load_rag_data()
+def run_leak(large, only_raccoon=False):
+    sys_seen_content, sys_unseen_content, sys_seen_inst, sys_unseen_inst, benign_queries = load_sys_data(only_raccoon)
+    rag_seen_content, rag_unseen_content, rag_seen_inst, rag_unseen_inst, rag_sys_prompt = load_rag_data(only_raccoon)
 
     sys_tv_atk, sys_tv_ben = data_prepare_sys(sys_seen_content, sys_seen_inst, benign_queries)
     sys_uc_atk, sys_uc_ben = data_prepare_sys(sys_unseen_content, sys_seen_inst, benign_queries)
@@ -266,6 +272,8 @@ def parse_args():
                         help="data mode: sys (system prompt), rag (RAG chunks), or leak (mixed)")
     parser.add_argument("--large", action="store_true",
                         help="large mode: use the full dataset without capping")
+    parser.add_argument("--only_raccoon", action="store_true",
+                        help="only use Raccoon attack samples")
     return parser.parse_args()
 
 
@@ -278,7 +286,7 @@ def main():
         "leak": run_leak,
     }
 
-    runners[args.mode](args.large)
+    runners[args.mode](args.large, args.only_raccoon)
 
 
 if __name__ == "__main__":
