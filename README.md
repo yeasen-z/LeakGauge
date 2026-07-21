@@ -61,7 +61,7 @@ python -m scripts.get_logprobs \
 
 > `--base_url` is the switch: if provided, server mode is used; otherwise offline mode loads the model from `--model_dir` locally.
 
-Prefill suffixes are configured in `leakaware/config.py`.
+Prefill suffixes are configured in `leakgauge/config.py`.
 
 
 ## Train probe
@@ -77,7 +77,7 @@ python -m scripts.train_probe \
 
 ### Python import (server mode)
 ```python
-from leakaware.detector import LeakageDetector
+from leakgauge.detector import LeakageDetector
 
 detector = LeakageDetector(
     processor_path="probe_models/intent/Llama-3.1-8B-Instruct/sys_prompt/best_model.pt",
@@ -100,7 +100,7 @@ import os
 os.environ["CUDA_VISIBLE_DEVICES"] = "0"  # set before importing vllm
 
 from vllm import LLM
-from leakaware.detector import LeakageDetector
+from leakgauge.detector import LeakageDetector
 
 llm = LLM(model="./models/meta/Llama-3.1-8B-Instruct")
 detector = LeakageDetector(

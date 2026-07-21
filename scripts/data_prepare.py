@@ -267,7 +267,7 @@ def run_leak(large, only_raccoon=False):
 
 
 def parse_args():
-    parser = argparse.ArgumentParser(description="Data preparation for LeakAware")
+    parser = argparse.ArgumentParser(description="Data preparation for LeakGauge")
     parser.add_argument("--mode", type=str, required=True, choices=["sys", "rag", "leak"],
                         help="data mode: sys (system prompt), rag (RAG chunks), or leak (mixed)")
     parser.add_argument("--large", action="store_true",

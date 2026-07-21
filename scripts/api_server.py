@@ -4,7 +4,7 @@ from typing import List, Optional
 from fastapi import FastAPI
 from pydantic import BaseModel, Field
 
-from leakaware.detector import LeakageDetector
+from leakgauge.detector import LeakageDetector
 
 
 class DetectRequest(BaseModel):
@@ -51,7 +51,7 @@ class ErrorResponse(BaseModel):
 
 
 app = FastAPI(
-    title="LeakAware",
+    title="LeakGauge",
     description="Eliciting LLM Leakage Awareness from Prefill Log Probabilities",
     version="0.0.1",
 )
@@ -101,7 +101,7 @@ async def detect_batch(req: BatchDetectRequest):
 def main():
     global detector
 
-    parser = argparse.ArgumentParser(description="LeakAware API Server")
+    parser = argparse.ArgumentParser(description="LeakGauge API Server")
     parser.add_argument("--processor_path", type=str, required=True, help="path to trained MLP checkpoint (.pt)")
     parser.add_argument("--base_url", type=str, default=None, help="vLLM server URL (server mode), e.g. http://127.0.0.1:22998/v1")
     parser.add_argument("--model_dir", type=str, default=None, help="local model path (Offline mode)")

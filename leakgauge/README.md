@@ -1,6 +1,6 @@
-# leakaware
+# leakgauge
 
-Core library for LeakAware — detecting LLM leakage intent from prefill log probabilities.
+Core library for LeakGauge — detecting LLM leakage intent from prefill log probabilities.
 
 ## File Structure
 

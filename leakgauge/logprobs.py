@@ -1,7 +1,7 @@
 import copy
 from typing import Dict, Optional
 from transformers import AutoTokenizer
-from leakaware.config import PREFILL_SUFFIX, REASONING_PREFIX
+from leakgauge.config import PREFILL_SUFFIX, REASONING_PREFIX
 
 
 def safe_token_concat(tokens1, tokens2):

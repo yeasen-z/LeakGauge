@@ -5,8 +5,8 @@ import argparse
 import torch
 import numpy as np
 from sklearn.metrics import roc_curve, auc, precision_recall_curve
-from leakaware.mlp import BinaryMlp, MlpTrainer
-from leakaware.dataset import DatasetManager
+from leakgauge.mlp import BinaryMlp, MlpTrainer
+from leakgauge.dataset import DatasetManager
 
 def evaluate_model(model, loader, device):
     model.eval()

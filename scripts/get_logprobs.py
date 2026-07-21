@@ -2,8 +2,8 @@ import json
 import re
 import argparse
 from pathlib import Path
-from leakaware.logprobs import LogProbsPrompt
-from leakaware.config import PREFILL_SUFFIX
+from leakgauge.logprobs import LogProbsPrompt
+from leakgauge.config import PREFILL_SUFFIX
 
 import sys
 sys.stdout.reconfigure(line_buffering=True)

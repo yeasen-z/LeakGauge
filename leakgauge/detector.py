@@ -2,8 +2,8 @@ import torch
 import numpy as np
 import os
 import json
-from leakaware.mlp import BinaryMlp
-from leakaware.logprobs import LogProbsPrompt
+from leakgauge.mlp import BinaryMlp
+from leakgauge.logprobs import LogProbsPrompt
 
 
 class LeakageDetector:
