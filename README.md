@@ -1,4 +1,4 @@
-# Eliciting LLM Leakage Awareness from Prefill Log Probabilities
+# LeakGauge
 
 We support both vLLM offline and vLLM server mode via a unified interface.
 
