@@ -1,4 +1,36 @@
-# LeakGauge
+<div align="center" style="margin-top:0; padding-top:0;">
+  <h1 style="margin-top:0; padding-top:0;">LeakGauge</h1>
+
+  <h4>
+    <a href="https://arxiv.org/abs/2608.17829"><img src="https://img.shields.io/badge/arXiv-2608.17829-b31b1b.svg" alt="arXiv"></a>
+  </h4>
+</div>
+
+This is the code repository for our paper: `The Model's Tell: Measuring Context-Leakage Attack Signals with Behavior Gauges`.
+
+ArXiv version and paper link: [https://arxiv.org/abs/2608.17829](https://arxiv.org/abs/2608.17829)
+
+This repository implements the LeakGauge pipeline for prompt-leakage
+detection: demo dataset preparation, log-probability extraction, probe
+training, and online or offline detection.
+
+For other safety tasks, please refer to [SafeGauge](https://github.com/yeasen-z/SafeGauge).
+
+## Citation
+
+```bibtex
+@misc{zhang2026leakgauge,
+      title={The Model's Tell: Measuring Context-Leakage Attack Signals with Behavior Gauges}, 
+      author={Maosen Zhang and Jianshuo Dong and Boting Lu and Wenyue Li and Xiaoping Zhang and Tianwei Zhang and Jie Zhang and Han Qiu},
+      year={2026},
+      eprint={2608.17829},
+      archivePrefix={arXiv},
+      primaryClass={cs.CR},
+      url={https://arxiv.org/abs/2608.17829}, 
+}
+```
+
+## Quick Start
 
 We support both vLLM offline and vLLM server mode via a unified interface.
 
