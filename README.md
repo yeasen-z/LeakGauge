@@ -10,9 +10,7 @@ This is the code repository for our paper: `The Model's Tell: Measuring Context-
 
 ArXiv version and paper link: [https://arxiv.org/abs/2608.17829](https://arxiv.org/abs/2608.17829)
 
-This repository implements the LeakGauge pipeline for prompt-leakage
-detection: demo dataset preparation, log-probability extraction, probe
-training, and online or offline detection.
+This repository implements the LeakGauge pipeline for leakage detection: demo dataset preparation, log-probability extraction, probe training, and online or offline detection.
 
 For other safety tasks, please refer to [SafeGauge](https://github.com/yeasen-z/SafeGauge).
 
