@@ -12,7 +12,7 @@ ArXiv version and paper link: [https://arxiv.org/abs/2608.17829](https://arxiv.o
 
 This repository implements the LeakGauge pipeline for leakage detection: demo dataset preparation, log-probability extraction, probe training, and online or offline detection.
 
-For other safety tasks, please refer to [SafeGauge](https://github.com/yeasen-z/SafeGauge).
+For other security and safety tasks, please refer to [SafeGauge](https://github.com/yeasen-z/SafeGauge).
 
 ## Citation
 
